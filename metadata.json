@@ -1,0 +1,6 @@
+{
+  "name": "Mosque Finance",
+  "description": "Mosque Finance Management System with account tracking, member subscriptions, income, expenses, and PDF receipts, supporting Bengali and English.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
