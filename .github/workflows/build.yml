@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - master
 
 jobs:
   build:
@@ -18,16 +19,23 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: 'gradle'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Build APK with Gradle
-        run: ./gradlew assembleRelease
+      - name: Find and Build APK
+        run: |
+          GRADLEW_PATH=$(find . -name gradlew)
+          if [ -z "$GRADLEW_PATH" ]; then
+            echo "Error: gradlew not found anywhere in the repository!"
+            exit 1
+          fi
+          DIR_PATH=$(dirname "$GRADLEW_PATH")
+          echo "Found gradlew in: $DIR_PATH"
+          cd "$DIR_PATH"
+          chmod +x gradlew
+          ./gradlew assembleRelease
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: mosque-finance-apk
-          path: app/build/outputs/apk/release/app-release-unsigned.apk
+          path: "**/build/outputs/apk/release/*unsigned.apk"
+          
